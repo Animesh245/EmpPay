@@ -57,8 +57,6 @@ public class AuthController {
 
     @PostMapping("/token")
     public ResponseEntity<?> generateToken(@RequestBody JwtRequest jwtRequest) throws Exception {
-        jwtRequest.getUsername();
-        jwtRequest.getPassword();
         try {
             this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(jwtRequest.getUsername(), jwtRequest.getPassword()));
         }catch (UsernameNotFoundException e)
@@ -70,7 +68,7 @@ public class AuthController {
         UserDetails userDetails = this.userService.loadUserByUsername(jwtRequest.getUsername());
 
         String token = this.authService.generateToken(userDetails);
-        System.out.println("JWT" + token);
+        
         return ResponseEntity.ok(new JwtResponse(token));
     }
 }
