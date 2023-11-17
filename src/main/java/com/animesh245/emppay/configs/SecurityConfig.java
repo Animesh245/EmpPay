@@ -36,9 +36,9 @@ public class SecurityConfig {
         {
                 http
                         .csrf(AbstractHttpConfigurer::disable)
-                        .authorizeHttpRequests(request -> request.requestMatchers("/auth/**")
+                        .authorizeHttpRequests(request -> request.requestMatchers("/**")
                                 .permitAll().anyRequest().authenticated())
-                        .cors(AbstractHttpConfigurer::disable)             // spring security will handle cors before spring mvc, this is for not creating conflict. Handles this error: response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource
+                        //.cors(AbstractHttpConfigurer::disable)             // spring security will handle cors before spring mvc, this is for not creating conflict. Handles this error: response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource
 //                .antMatchers("/api/v1/employees/**", "/api/v1/projects/**", "/api/v1/departments/**", "/api/v1/dependents/**").hasAuthority("ROLE_ADMIN")
 //                .antMatchers( HttpMethod.GET,"/api/v1/dependents/**", "/api/v1/employees/{id}").hasAuthority("ROLE_EMPLOYEE")
 //                .antMatchers(HttpMethod.POST, "/api/v1/employees/{id}", "/api/v1/employees/**").hasAuthority("ROLE_EMPLOYEE")

@@ -5,8 +5,8 @@ import com.animesh245.emppay.entities.Transaction;
 import com.animesh245.emppay.entities.User;
 import com.animesh245.emppay.repositories.TransactionRepository;
 import com.animesh245.emppay.repositories.UserRepository;
-import com.animesh245.emppay.utils.IsActive;
 import com.animesh245.emppay.utils.UserType;
+import com.animesh245.emppay.utils.Utils;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -30,22 +30,29 @@ public class UserService implements UserDetailsService {
 
     public User getUserByName(String name) {
         if(StringUtils.isNotBlank(name)) {
-            return userRepository.getUserByName(name);
+            User user = userRepository.getUserByName(name);
+            return user;
         }
         return null;
     }
+
     public User getUserById(String userId) {
         User user = userId != null ? userRepository.getUserByUserId(userId) : null;
         return user;
     }
 
+    public List<User> getAllActiveUsers(int isActive) {
+        return userRepository.getAllByIsActive(isActive);
+    }
+
     public String saveOrUpdateUser(User user) {
         String userId = user.getUserId();
         String password = user.getPassword();
+        User user2 = getUserById(userId);
 
-        if(userId == null) {
-            user.setUserId(User.generateUUID());
-            user.setIsActive(IsActive.ACTIVE);
+        if(user2 == null ) {
+            //user.setUserId(User.generateUUID());
+            user.setIsActive(Utils.IsActive.ACTIVE);
             user.setUserTypeRole(UserType.EMPLOYEE);
             user.setPassword(passwordEncoder.encode(password));
             userRepository.save(user);
@@ -63,7 +70,7 @@ public class UserService implements UserDetailsService {
                 userRepository.deleteUserByUserId(userId);
                 return user.getName() + " has been deleted.";
             } else {
-                userRepository.customUpdateEmployeeStatus(IsActive.INACTIVE.getValue(), userId);
+                userRepository.customUpdateEmployeeStatus(Utils.IsActive.INACTIVE, userId);
                 return "successful";
             }
         }
@@ -84,7 +91,7 @@ public class UserService implements UserDetailsService {
         Long salary = 0L;
 
         User user = userRepository.getUserByUserId(userId);
-        salary = basicGrade + (user.getGrade().getValue() * 5000L);
+        salary = user.getGrade() * 5000L;
         return salary;
     }
 
@@ -108,16 +115,16 @@ public class UserService implements UserDetailsService {
         return transactions;
     }
     @Override
-    public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException
     {
-        User user = userRepository.getUserByName(name);
+        User user = userRepository.getUserByEmail(email);
 
-        if(name.equals(user.getName()))
+        if(email.equals(user.getEmail()))
         {
-            return new org.springframework.security.core.userdetails.User(user.getName(), user.getPassword(), user.getAuthorities());
+            return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), user.getAuthorities());
         }else
         {
-            throw new UsernameNotFoundException(name);
+            throw new UsernameNotFoundException(email);
         }
     }
 }

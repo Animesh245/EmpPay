@@ -1,6 +1,5 @@
 package com.animesh245.emppay.entities;
 
-import com.animesh245.emppay.utils.AccountType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,7 +21,7 @@ public class BankAccount {
     private Long accountId;
 
     @Column(name = "account_type")
-    private AccountType accountType;
+    private int accountType;
 
     @Column(name = "account_name")
     private String accountName;

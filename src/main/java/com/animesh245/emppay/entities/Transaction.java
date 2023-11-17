@@ -24,11 +24,14 @@ public class Transaction {
     private Long receiverId;
 
     @Column(name = "sender_acc_id")
-    private Long senderId;
+    private String senderId;
 
     @Column(name = "amount")
     private Long amount;
 
     @Column(name = "transaction_time")
     private Timestamp transactionTime;
+
+    @Column(name = "status")
+    private String status;
 }

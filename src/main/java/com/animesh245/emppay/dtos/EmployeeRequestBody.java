@@ -1,6 +1,5 @@
 package com.animesh245.emppay.dtos;
 
-import com.animesh245.emppay.utils.EmployeeGrade;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,11 +8,12 @@ import lombok.Setter;
 public class EmployeeRequestBody {
     private String userId;
     private String name;
+    private String email;
     private String password;
-    private String grade;
+    private int grade;
     private String address;
     private String mobileNumber;
-    private String accountType;
+    private int accountType;
     private String accountName;
     private String accountNumber;
     private String bankName;

@@ -1,7 +1,5 @@
 package com.animesh245.emppay.entities;
 
-import com.animesh245.emppay.utils.EmployeeGrade;
-import com.animesh245.emppay.utils.IsActive;
 import com.animesh245.emppay.utils.UserType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -29,14 +27,17 @@ public class User implements Serializable, UserDetails {
     @Column(name = "id", nullable = false)
     private String userId;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "password")
+    @Column(name = "email", nullable = false)
+    private String email;
+
+    @Column(name = "password", nullable = false)
     private String password;
 
     @Column(name = "grade")
-    private EmployeeGrade grade;
+    private int grade;
 
     @Column(name = "address")
     private String address;
@@ -48,15 +49,8 @@ public class User implements Serializable, UserDetails {
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     private BankAccount bankAccount;
 
-//    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
-//    @JoinColumn(name = "account_id", referencedColumnName = "id")
-//    private BankAccount accountId;
-//@OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
-//@JoinColumn(name = "current_balance", referencedColumnName = "current_balance")
-//private BankAccount currentBalance;
-
     @Column(name = "total_salary")
-    private Long totalSalary = 0L;
+    private Long totalSalary;
 
     @Column(name = "house_rent")
     private Long houseRent;
@@ -65,7 +59,7 @@ public class User implements Serializable, UserDetails {
     private Long medicalAllowance;
 
     @Column(name = "is_active")
-    private IsActive isActive = IsActive.ACTIVE;
+    private int isActive;
 
     @Column(name = "user_role")
     private UserType userTypeRole;
@@ -89,7 +83,7 @@ public class User implements Serializable, UserDetails {
 
     @Override
     public String getUsername() {
-        return name;
+        return this.email;
     }
 
     @Override
